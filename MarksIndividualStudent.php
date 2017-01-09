@@ -8,23 +8,22 @@ header('Content-Type: application/json');
 $output = array();
 
 $conn = pg_connect("host=localhost port=5432 dbname=sample_db user=postgres  password=''");
-echo $POST['markstype'];
-echo $POST['class'];
-$class= $POST['class'];
-$marksType=$POST['markstype'];
+$class= $_GET['class'];
+$marksType=$_GET['markstype'];
 
 if (!$conn) {
   echo "An error occurred1.\n";
   exit;
 }
-//
+$tableName = 'Marks'.$class.ucwords($marksType);
 $student_id='1000';
-$result = pg_query($conn, "select * FROM Marks1Final where student_id = $student_id");
+$result = pg_query($conn, "select * FROM $tableName where student_id = $student_id");
 $i = 0;
 $fieldName=array();
 
 if (!$result) {
   echo "An error occurred2.\n";
+  echo $tableName;
   exit;
 }
 $output2 = array();
