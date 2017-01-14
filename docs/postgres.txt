@@ -1,0 +1,16 @@
+postres:
+
+stored procedure
+to store the records from a table into an array .
+create FUNCTION add_data()
+   RETURNS integer[] AS $$      return integer array
+   DECLARE
+   uids integer[];
+   declare counting integer;
+   BEGIN
+ select array(select uid from type) into uids ;
+   RETURN uids;
+   END;
+   $$ LANGUAGE plpgsql;
+
+select add_data(); calling the sp
