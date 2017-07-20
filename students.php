@@ -12,8 +12,20 @@ if (!$conn) {
   echo "An error occurred1.\n";
   exit;
 }
+$encoded_url = urldecode($_SERVER["QUERY_STRING"]);
+$query_params = explode("=", $_SERVER["QUERY_STRING"]);
+$query_params = $query_params[1];
 
-$result = pg_query($conn, "SELECT * FROM students");
+$encoded_url = explode("filter[",$encoded_url);
+$encoded_url = explode("]",$encoded_url[1]);
+$query_filter = $encoded_url[0];
+if($query_filter && $query_params){
+  $result = pg_query($conn, "SELECT * FROM students where $query_filter = $query_params");
+  // print_r($result);exit;
+}else{
+  $result = pg_query($conn, "SELECT * FROM students");
+}
+
 if (!$result) {
   echo "An error occurred2.\n";
   exit;
